@@ -38,7 +38,8 @@ public class vote_excute {
 			while(result.next()){
 			vote_content=new vote_content();
 			vote_content.setVote_title(result.getString("AWtitle"));
-			
+			vote_content.setAWid(result.getInt("AWid"));
+			System.out.println("AAAAAA"+result.getInt("AWid"));
 			try {
 			 String date=  result.getString("AWcreatetime");
 			
