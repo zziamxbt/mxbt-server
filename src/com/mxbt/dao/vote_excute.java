@@ -31,6 +31,7 @@ public class vote_excute {
 		List<vote_content> list = new ArrayList<vote_content>();
 		vote_content vote_content = null;
 		try {
+<<<<<<< HEAD
 			connection = C3P0Utils.getConnection();
 			state = connection
 					.prepareStatement("select * from andwrite where AWcid=" + x);
@@ -59,6 +60,33 @@ public class vote_excute {
 							vote_content.setVote_publishtime(day + "天前发表");
 						}
 
+=======
+			connection=C3P0Utils.getConnection();
+			state=connection.prepareStatement("select * from andwrite where AWcid="+x);
+		//数据正在待续中
+			
+			result=state.executeQuery();
+			while(result.next()){
+			vote_content=new vote_content();
+			vote_content.setVote_title(result.getString("AWtitle"));
+			vote_content.setAWid(result.getInt("AWid"));
+			System.out.println("AAAAAA"+result.getInt("AWid"));
+			try {
+			 String date=  result.getString("AWcreatetime");
+			
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 	Date nowdate=new Date();
+			 
+				Date beforeDate=sdf.parse(date);
+				
+				if(nowdate.getTime()>beforeDate.getTime()){
+					int day=(int)((nowdate.getTime()-beforeDate.getTime())/1000/60/60/24);
+				//	System.out.println("天数"+day);
+					if(day==0){
+					vote_content.setVote_publishtime("今天发表");
+					}else{
+						vote_content.setVote_publishtime(day+"天前发表");
+>>>>>>> 80fefba3269281edfbe1785efacdc8a0d26b867a
 					}
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block

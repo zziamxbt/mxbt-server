@@ -11,10 +11,11 @@ public class vote_content implements Serializable{
 	    String vote_title;
 	    String vote_num;
 	    boolean flag;
+	    int AWid;
 public vote_content(){}
 public vote_content(int uid, String vote_head, String vote_name,
 		String vote_publishtime, String vote_coverimg, String vote_title,
-		String vote_num, boolean flag) {
+		String vote_num, boolean flag,int AWid) {
 	super();
 	Uid = uid;
 	this.vote_head = vote_head;
@@ -24,6 +25,7 @@ public vote_content(int uid, String vote_head, String vote_name,
 	this.vote_title = vote_title;
 	this.vote_num = vote_num;
 	this.flag = flag;
+	this.AWid=AWid;
 }
 public int getUid() {
 	return Uid;
@@ -74,6 +76,11 @@ public void setFlag(boolean flag) {
 	this.flag = flag;
 }
 
-	  
+public int getAWid() {
+	return AWid;
+}
+public void setAWid(int AWid) {
+	this.AWid=AWid;
+}  
 
 }
