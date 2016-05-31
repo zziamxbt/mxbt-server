@@ -51,19 +51,22 @@ public class vote_servlet extends HttpServlet {
 //				String as=new String(vote_name.getBytes("iso-8859-1"),"UTF-8");
 //				System.out.println("名字:"+as);
 				int U=Integer.parseInt(Uid);
-				v1.updatenum(U);	
+				v1.updatenum(U,Cid);	
+				System.out.println("更新数据库A");
 			}else{
 
 				int U=Integer.parseInt(Uid);
-				v1.updatenum2(U);
+				v1.updatenum2(U,Cid);
+				System.out.println("更新数据库B");
 			}
 			
 		}
-		System.out.println("SSSSSSS");
+		
+		
 		list=v1.getdata(Cid);
 		Gson gson=new Gson();
 		String result=gson.toJson(list);
-		System.out.println("AAA"+list.get(0).isFlag());
+		System.out.println("AAA"+result);
 		printWriter.write(result);
 		printWriter.close();
 	}
