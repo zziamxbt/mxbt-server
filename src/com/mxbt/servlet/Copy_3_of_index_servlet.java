@@ -20,8 +20,8 @@ import com.mxbt.dao.ForIndex;
 /**
  * Servlet implementation class index_servlet
  */
-@WebServlet("/index_servlet")
-public class index_servlet extends HttpServlet {
+@WebServlet("/copyofindex3")
+public class Copy_3_of_index_servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	String name=null;
 	PrintWriter mPrintWriter;
@@ -29,7 +29,7 @@ public class index_servlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public index_servlet() {
+    public Copy_3_of_index_servlet() {
         super();
         // TODO Auto-generated constructor stub
     }
