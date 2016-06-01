@@ -15,9 +15,11 @@ import java.util.List;
 
 import com.mxbt.beans.JavaBean_Article;
 import com.mxbt.utils.C3P0Utils;
+import com.mxbt.utils.HttpString;
 
 public class GetArticle_complete {
 	private Connection mConnection;
+	private HttpString httpString=new HttpString();
 	private PreparedStatement mStatement, mStatement_cover, mStatement_type,
 			mStatement_author, mStatement_uhead, mStatement_ubk,
 			mStatement_chapter_author, mStatement_chapter_content,
@@ -145,7 +147,7 @@ public class GetArticle_complete {
 				while (mResultSet_chapter_content.next()) {
 					if(mResultSet_chapter_content.getString("Tpath")!=null){
 						mResultSet_chapter_contentList
-						.add(getHttpString(mResultSet_chapter_content.getString("Tpath")));
+						.add(httpString.getHttpString(mResultSet_chapter_content.getString("Tpath")));
 				mResultSet_chapter_numberList
 						.add(mResultSet_chapter_content.getString("Ctitle"));
 				mResultSet_create_chapter_timeList
@@ -177,40 +179,7 @@ public class GetArticle_complete {
 
 	}
 	
-	 public String getHttpString(String path) { 
-	        // 存放获取到的数据 
-	        String info = ""; 
-	        // 网络请求所需变量 
-	        InputStream in = null; 
-	        InputStreamReader reader = null; 
-	        BufferedReader bufferedReader = null; 
-	        try { 
-	            URL url = new URL(path); 
-	            // 根据Url打开地址，以utf-8编码的形式返回输入流 
-	            in = url.openStream(); 
-	            reader = new InputStreamReader(in, "utf-8"); 
-	            bufferedReader = new BufferedReader(reader); 
-	            // 临时接受数据变量 
-	            String temp = null; 
-	            while ((temp = bufferedReader.readLine()) != null) { 
-	                info += temp; 
-	            } 
-	            return info; 
-	        } catch (MalformedURLException e) { 
-	            e.printStackTrace(); 
-	        } catch (IOException e) { 
-	            e.printStackTrace(); 
-	        } finally { 
-	            try { 
-	                in.close(); 
-	                reader.close(); 
-	                bufferedReader.close(); 
-	            } catch (IOException e) { 
-	                e.printStackTrace(); 
-	            } 
-	        } 
-	        return null; 
-	    } 
+	
 	 
 
 }

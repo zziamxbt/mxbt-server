@@ -20,8 +20,8 @@ import com.mxbt.dao.ForIndex;
 /**
  * Servlet implementation class index_servlet
  */
-@WebServlet("/index_servlet")
-public class index_servlet extends HttpServlet {
+@WebServlet("/indexofshenghuo_servlet")
+public class indexOfShengHuo_servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	String name=null;
 	PrintWriter mPrintWriter;
@@ -29,7 +29,7 @@ public class index_servlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public index_servlet() {
+    public indexOfShengHuo_servlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,17 +39,32 @@ public class index_servlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+			String mySelect = request.getParameter("select");
+			if(mySelect.equals("newest")){
 			mPrintWriter = response.getWriter();
 		
 			ForIndex forindex = new ForIndex();
 			List<IndexBean> list = new ArrayList<IndexBean>();
 			
-			list= forindex.getIndexData();
+			list= forindex.getIndexDataOfShengHuoByNewest();
 			Gson gson = new Gson();
 			String result  = gson.toJson(list);
 			mPrintWriter.write(result);
 			mPrintWriter.close();
-			System.out.println(result);
+			}else if(mySelect.equals("hotest")){
+				mPrintWriter = response.getWriter();
+				
+				ForIndex forindex = new ForIndex();
+				List<IndexBean> list = new ArrayList<IndexBean>();
+				
+				list= forindex.getIndexDataOfShengHuoByHotest();
+				Gson gson = new Gson();
+				String result  = gson.toJson(list);
+				mPrintWriter.write(result);
+				mPrintWriter.close();
+			
+			}
+			
 	
 		
 	}
