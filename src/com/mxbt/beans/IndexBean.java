@@ -71,12 +71,14 @@ public class IndexBean implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	
 	@Override
 	public String toString() {
-		return "IndexBean [articleId="+articleId+",headImg=" + headImg + ", nickName=" + nickName
-				+ ", dateTime=" + dateTime + ", kind=" + kind + ", backGround="
-				+ backGround + ", title=" + title + ", content=" + content
-				+ "]";
+		return "IndexBean [articleId=" + articleId + ", headImg=" + headImg
+				+ ", nickName=" + nickName + ", dateTime=" + dateTime
+				+ ", kind=" + kind + ", backGround=" + backGround + ", title="
+				+ title + ", content=" + content +'\n'+ "]";
 	}
 	public IndexBean(int articleId , String headImg, String nickName, String dateTime,
 			String kind, String backGround, String title, String content) {
