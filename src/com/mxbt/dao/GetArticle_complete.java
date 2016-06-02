@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.mxbt.beans.JavaBean_Article;
@@ -174,12 +176,81 @@ public class GetArticle_complete {
 			e.printStackTrace();
 		} finally {
 			C3P0Utils.close(mResultSet, mStatement, mConnection);
+			C3P0Utils.close(mResultSet_author, mStatement_author, null);
+			C3P0Utils.close(mResultSet_chapter_author, mStatement_chapter_author, null);
+			C3P0Utils.close(mResultSet_chapter_content, mStatement_chapter_content, null);
+			C3P0Utils.close(mResultSet_cover, mStatement_cover, null);
+			C3P0Utils.close(mResultSet_focus, mStatement_focus, null);
+			C3P0Utils.close(mResultSet_reader, mStatement_reader, null);
+			C3P0Utils.close(mResultSet_type, mStatement_type, null);
+			C3P0Utils.close(mResultSet_ubk, mStatement_ubk, null);
+			C3P0Utils.close(mResultSet_uhead, mStatement_uhead, null);
+			
 		}
 		return mlist;
 
 	}
 	
+	//对推荐表进行修改
+	public void ChargeRecommend(String flag,int aid,int User_Id){
+		String sql=null;
+		if(flag.equals("true")){
+			sql="INSERT INTO recommend(REaid,REuid,REcreatetime) VALUES('"+aid
+					+ "','"+User_Id
+					+ "','"+NowTime()
+					+ "')";				
+		}else{
+			sql="DELETE FROM recommend WHERE REaid="+aid
+					+ " AND REuid="+User_Id;				
+		}
+			
+		try {
+			mConnection = C3P0Utils.getConnection();
+			mStatement = mConnection
+					.prepareStatement(sql);
+		    mStatement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			C3P0Utils.close(null, mStatement, mConnection);
+		}
+		
+		
+	}
 	
+	//对收藏表进行修改
+	public void ChargeCollect(String flag,int aid,int User_Id){
+		String sql=null;
+		if(flag.equals("true")){
+			sql="INSERT INTO collect(COaid,COuid,COcreatetime) VALUES('"+aid
+					+ "','"+User_Id
+					+ "','"+NowTime()
+					+ "')";				
+		}else{
+			sql="DELETE FROM collect WHERE COaid="+aid
+					+ " AND COcreatetime="+User_Id;				
+		}
+		try {
+			mConnection = C3P0Utils.getConnection();
+			mStatement = mConnection
+					.prepareStatement(sql);
+		    mStatement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			C3P0Utils.close(null, mStatement, mConnection);
+		}
+	}
+	
+	//系统当前时间
+	public String NowTime() {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		return df.format(new Date());// new Date()为获取当前系统时间
+
+		
+	}
 	 
 
 }
