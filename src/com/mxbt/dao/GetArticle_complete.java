@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.mxbt.beans.JavaBean_Article;
@@ -19,15 +21,17 @@ import com.mxbt.utils.HttpString;
 
 public class GetArticle_complete {
 	private Connection mConnection;
-	private HttpString httpString=new HttpString();
+	private HttpString httpString = new HttpString();
 	private PreparedStatement mStatement, mStatement_cover, mStatement_type,
 			mStatement_author, mStatement_uhead, mStatement_ubk,
 			mStatement_chapter_author, mStatement_chapter_content,
-			mStatement_focus, mStatement_reader;
+			mStatement_focus, mStatement_reader, mStatement_recommand,
+			mStatement_collect;
 	private ResultSet mResultSet, mResultSet_cover, mResultSet_type,
 			mResultSet_author, mResultSet_uhead, mResultSet_ubk,
 			mResultSet_chapter_author, mResultSet_chapter_content,
-			mResultSet_focus, mResultSet_reader;
+			mResultSet_focus, mResultSet_reader, mResultSet_recommand,
+			mResultSet_collect;
 	private JavaBean_Article mBean_Article;
 	private List<JavaBean_Article> mlist = new ArrayList<JavaBean_Article>();
 	private List<String> mResultSet_chapter_authorList = new ArrayList<String>();
@@ -37,11 +41,10 @@ public class GetArticle_complete {
 	private List<String> mResultSet_create_chapter_timeList = new ArrayList<String>();
 
 	// 得到文章的id，获取文章的封面
-	
 
-	public List<JavaBean_Article> SelectArticle(int aid) {
-	    int Article_id = aid;
-	    System.out.print(Article_id+"RRRRRRRRRRRRRRRRRRRRRRR");
+	public List<JavaBean_Article> SelectArticle(int aid, int User_Id) {
+		int Article_id = aid;
+		// System.out.print(Article_id+"RRRRRRRRRRRRRRRRRRRRRRR");
 		try {
 			mConnection = C3P0Utils.getConnection();
 			mStatement = mConnection
@@ -73,7 +76,17 @@ public class GetArticle_complete {
 				mStatement_reader = mConnection
 						.prepareStatement("SELECT COUNT(RECuid) FROM recentread WHERE RECaid="
 								+ Article_id);
+				// 判断此文章是否被推荐
+				mStatement_recommand = mConnection
+						.prepareStatement("SELECT COUNT(*) FROM recommend WHERE REaid="
+								+ aid + " AND REuid=" + User_Id);
 
+				// 判断此文章是否被收藏
+				mStatement_collect = mConnection
+						.prepareStatement("SELECT COUNT(*) FROM collect WHERE COaid="
+								+ aid + " AND COuid=" + User_Id);
+				mResultSet_recommand = mStatement_recommand.executeQuery();
+				mResultSet_collect = mStatement_collect.executeQuery();
 				mResultSet_reader = mStatement_reader.executeQuery();
 				mResultSet_cover = mStatement_cover.executeQuery();
 				mResultSet_type = mStatement_type.executeQuery();
@@ -86,6 +99,7 @@ public class GetArticle_complete {
 
 				// 文章名
 				mBean_Article.setArticle_title(mResultSet.getString("Atitle"));
+				
 				// 获取读者
 				if (mResultSet_reader.next()) {
 					mBean_Article.setReader_number(mResultSet_reader.getInt(1));
@@ -143,20 +157,38 @@ public class GetArticle_complete {
 						.setAuthor_chapter_name(mResultSet_chapter_authorList);
 				mBean_Article
 						.setAuthor_chapter_head(mResultSet_author_chapter_headList);
+				// 判断是否被推荐
+				if (mResultSet_recommand.next()) {
+                       if(mResultSet_recommand.getInt(1)==0){
+                    	   mBean_Article.setRecommandFalg(false);
+                       }else{
+                    	   mBean_Article.setRecommandFalg(true);
+                       }
+				}
+				// 判断是否被收藏
+				if (mResultSet_collect.next()) {
+					 if(mResultSet_collect.getInt(1)==0){
+                  	   mBean_Article.setCollectFalg(false);
+                     }else{
+                  	   mBean_Article.setCollectFalg(true);
+                     }
+				}
 				// 文章每个章节的内容，章节号和创建章节时间
 				while (mResultSet_chapter_content.next()) {
-					if(mResultSet_chapter_content.getString("Tpath")!=null){
-						mResultSet_chapter_contentList
-						.add(httpString.getHttpString(mResultSet_chapter_content.getString("Tpath")));
-				mResultSet_chapter_numberList
-						.add(mResultSet_chapter_content.getString("Ctitle"));
-				mResultSet_create_chapter_timeList
-						.add(mResultSet_chapter_content
-								.getString("Ccreatetime"));
-					}else{
-						mBean_Article.setChapter_id(mResultSet_chapter_content.getInt("Cid"));
+					if (mResultSet_chapter_content.getString("Tpath") != null) {
+						mResultSet_chapter_contentList.add(httpString
+								.getHttpString(mResultSet_chapter_content
+										.getString("Tpath")));
+						mResultSet_chapter_numberList
+								.add(mResultSet_chapter_content
+										.getString("Ctitle"));
+						mResultSet_create_chapter_timeList
+								.add(mResultSet_chapter_content
+										.getString("Ccreatetime"));
+					} else {
+						mBean_Article.setChapter_id(mResultSet_chapter_content
+								.getInt("Cid"));
 					}
-					
 
 				}
 				mBean_Article.setChapter_number(mResultSet_chapter_numberList);
@@ -174,12 +206,76 @@ public class GetArticle_complete {
 			e.printStackTrace();
 		} finally {
 			C3P0Utils.close(mResultSet, mStatement, mConnection);
+			C3P0Utils.close(mResultSet_author, mStatement_author, null);
+			C3P0Utils.close(mResultSet_chapter_author,
+					mStatement_chapter_author, null);
+			C3P0Utils.close(mResultSet_chapter_content,
+					mStatement_chapter_content, null);
+			C3P0Utils.close(mResultSet_cover, mStatement_cover, null);
+			C3P0Utils.close(mResultSet_focus, mStatement_focus, null);
+			C3P0Utils.close(mResultSet_reader, mStatement_reader, null);
+			C3P0Utils.close(mResultSet_type, mStatement_type, null);
+			C3P0Utils.close(mResultSet_ubk, mStatement_ubk, null);
+			C3P0Utils.close(mResultSet_uhead, mStatement_uhead, null);
+			C3P0Utils.close(mResultSet_recommand, mStatement_recommand, null);
+			C3P0Utils.close(mResultSet_collect, mStatement_collect, null);
+
 		}
 		return mlist;
 
 	}
-	
-	
-	 
+
+	// 对推荐表进行修改
+	public void ChargeRecommend(String flag, int aid, int User_Id) {
+		String sql = null;
+		if (flag.equals("true")) {
+			sql = "INSERT INTO recommend(REaid,REuid,REcreatetime) VALUES('"
+					+ aid + "','" + User_Id + "','" + NowTime() + "')";
+		} else {
+			sql = "DELETE FROM recommend WHERE REaid=" + aid + " AND REuid="
+					+ User_Id;
+		}
+
+		try {
+			mConnection = C3P0Utils.getConnection();
+			mStatement = mConnection.prepareStatement(sql);
+			mStatement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			C3P0Utils.close(null, mStatement, mConnection);
+		}
+
+	}
+
+	// 对收藏表进行修改
+	public void ChargeCollect(String flag, int aid, int User_Id) {
+		String sql = null;
+		if (flag.equals("true")) {
+			sql = "INSERT INTO collect(COaid,COuid,COcreatetime) VALUES('"
+					+ aid + "','" + User_Id + "','" + NowTime() + "')";
+		} else {
+			sql = "DELETE FROM collect WHERE COaid=" + aid + " AND COuid="
+					+ User_Id;
+		}
+		try {
+			mConnection = C3P0Utils.getConnection();
+			mStatement = mConnection.prepareStatement(sql);
+			mStatement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			C3P0Utils.close(null, mStatement, mConnection);
+		}
+	}
+
+	// 系统当前时间
+	public String NowTime() {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 设置日期格式
+		return df.format(new Date());// new Date()为获取当前系统时间
+
+	}
 
 }

@@ -49,7 +49,7 @@ public class Write_Content extends HttpServlet {
 		
 
 		int AWid=Integer.valueOf(request.getParameter("AWid"));
-		System.out.println(AWid+"XXXXXXXXXXXXXXXXXXX");
+	//	System.out.println(AWid+"XXXXXXXXXXXXXXXXXXX");
 		mPrintWriter=response.getWriter();
 		
 		List<Write_ReadBean> mList=new ArrayList<Write_ReadBean>();

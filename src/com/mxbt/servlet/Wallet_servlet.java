@@ -2,6 +2,7 @@ package com.mxbt.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,20 +12,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.mxbt.beans.SubjectBean;
-import com.mxbt.dao.SelectSubject;
+import com.mxbt.beans.JavaBean_Article;
+import com.mxbt.beans.WalletBean;
+import com.mxbt.dao.GetArticle_complete;
+import com.mxbt.dao.GetWallet;
 
 /**
- * Servlet implementation class ShowSubjectServlet
+ * Servlet implementation class Wallet_servlet
  */
-@WebServlet("/showSubjectServlet")
-public class ShowSubjectServlet extends HttpServlet {
+@WebServlet("/wallet_servlet")
+public class Wallet_servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private PrintWriter mPrintWriter;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ShowSubjectServlet() {
+    public Wallet_servlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,17 +45,35 @@ public class ShowSubjectServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<SubjectBean> mList=null;
-		SelectSubject select=new SelectSubject();
-		PrintWriter pw=response.getWriter();
-		mList=select.selectAllSubject();
-		if(mList!=null){
-			Gson gson=new Gson();
-			String result=gson.toJson(mList);
-			pw.write(result);
-			pw.close();
-			System.out.println("已获取后台专题Bean！");
+		// TODO Auto-generated method stub
+		int Uid=0;
+		int goldNum=0;
+	
+		
+		List<WalletBean> mList=new ArrayList<WalletBean>();
+		GetWallet mGetWallet=new GetWallet();
+		
+		
+		if(request.getParameter("goldNum")==null){
+			Uid=Integer.valueOf(request.getParameter("Uid"));
+		}else{
+			 Uid=Integer.valueOf(request.getParameter("Uid"));
+			 goldNum=Integer.valueOf(request.getParameter("goldNum"));
+			 mGetWallet.SetGoldNum(Uid,goldNum);
+			 
 		}
+		
+		
+		
+		mPrintWriter=response.getWriter();
+		
+		mList=mGetWallet.getWallet(Uid);
+		
+		Gson gson=new Gson();
+		String result=gson.toJson(mList);
+		mPrintWriter.write(result);
+	    mPrintWriter.close();
+		
 	}
 
 }
