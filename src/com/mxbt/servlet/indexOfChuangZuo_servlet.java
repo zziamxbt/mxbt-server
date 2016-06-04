@@ -62,6 +62,7 @@ public class indexOfChuangZuo_servlet extends HttpServlet {
 				String result  = gson.toJson(list);
 				mPrintWriter.write(result);
 				mPrintWriter.close();
+				System.out.println(list.toString());
 			
 			}
 			

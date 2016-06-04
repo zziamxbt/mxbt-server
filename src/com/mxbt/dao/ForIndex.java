@@ -18,8 +18,7 @@ public class ForIndex {
 	private ResultSet result2 = null;
 	private PreparedStatement state3 = null;
 	private ResultSet result3 = null;
-	private ResultSet preresult = null;
-	private PreparedStatement prestate = null;
+
 
 	public List<IndexBean> getIndexData() {
 		List<IndexBean> list = new ArrayList<IndexBean>();
