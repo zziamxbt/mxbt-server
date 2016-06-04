@@ -50,23 +50,25 @@ public class Article_complete extends HttpServlet {
 		// TODO Auto-generated method stub
 		// 都是标示
 		int Num = Integer.valueOf(request.getParameter("Num"));
-		String RecommendNum = request.getParameter("RecommendNum");
-		String CollectNum = request.getParameter("CollectNum");
+		
+		
 
 		List<JavaBean_Article> mList = new ArrayList<JavaBean_Article>();
 		GetArticle_complete mGetArticle = new GetArticle_complete();
+	
 		int aid = Integer.valueOf(request.getParameter("article_id"));
-		int User_Id = Integer.valueOf(request.getParameter("User_Id"));
-
+		int User_Id=Integer.valueOf(request.getParameter("User_Id"));
+		//System.out.print("章节id"+aid);
 		mPrintWriter = response.getWriter();
 
 		if (Num == 0) {
-			mList = mGetArticle.SelectArticle(aid);
+			mList = mGetArticle.SelectArticle(aid,User_Id);
 			Gson gson = new Gson();
 			String result = gson.toJson(mList);
 			mPrintWriter.write(result);
 			mPrintWriter.close();
 		} else if (Num == 1) {
+			String RecommendNum = request.getParameter("RecommendNum");
 			if (RecommendNum.equals("true")) {
 				mGetArticle.ChargeRecommend(RecommendNum, aid, User_Id);
 			} else {
@@ -74,6 +76,7 @@ public class Article_complete extends HttpServlet {
 			}
 
 		} else if (Num == 2) {
+			String CollectNum = request.getParameter("CollectNum");
 			if (CollectNum.equals("true")) {
 				mGetArticle.ChargeCollect(CollectNum, aid, User_Id);
 			} else {
