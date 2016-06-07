@@ -13,15 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
+
+
 import com.google.gson.Gson;
 import com.mxbt.beans.IndexBean;
+import com.mxbt.dao.ForCenter;
 import com.mxbt.dao.ForIndex;
 
 /**
  * Servlet implementation class index_servlet
  */
-@WebServlet("/copyofindex2")
-public class Copy_2_of_index_servlet extends HttpServlet {
+@WebServlet("/mycollect")
+public class CenterOfMycollect extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	String name=null;
 	PrintWriter mPrintWriter;
@@ -29,7 +33,7 @@ public class Copy_2_of_index_servlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Copy_2_of_index_servlet() {
+    public CenterOfMycollect() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,11 +44,12 @@ public class Copy_2_of_index_servlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 			mPrintWriter = response.getWriter();
-		
-			ForIndex forindex = new ForIndex();
+			int uid = Integer.parseInt(request.getParameter("uid"));
+			System.out.println("centerofmycollect"+uid);
+			ForCenter forCenter = new ForCenter();
 			List<IndexBean> list = new ArrayList<IndexBean>();
 			
-			list= forindex.getIndexData();
+			list= forCenter.MyCollect(uid);
 			Gson gson = new Gson();
 			String result  = gson.toJson(list);
 			mPrintWriter.write(result);
