@@ -1,11 +1,8 @@
 package com.mxbt.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,26 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-
-
-
-import com.google.gson.Gson;
-import com.mxbt.beans.IndexBean;
-import com.mxbt.dao.ForIndex;
+import com.mxbt.dao.AndWrite_insert;
 
 /**
- * Servlet implementation class index_servlet
+ * Servlet implementation class AndWrite_InsertServlet
  */
-@WebServlet("/index_servlet")
-public class index_servlet extends HttpServlet {
+@WebServlet("/AndWrite_InsertServlet")
+public class AndWrite_InsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String name=null;
-	PrintWriter mPrintWriter;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public index_servlet() {
+    public AndWrite_InsertServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,19 +33,21 @@ public class index_servlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-			mPrintWriter = response.getWriter();
+		int Uid=Integer.parseInt(request.getParameter("Uid"));
+		int Cid=Integer.parseInt(request.getParameter("Cid"));
+		String path=request.getParameter("path");
+		String title=request.getParameter("title");
+		String as=new String(title.getBytes("iso-8859-1"),"UTF-8");
+		String createtime=request.getParameter("createtime");
+		String isfinish=request.getParameter("isfinish");
+		String asd=new String(isfinish.getBytes("iso-8859-1"),"UTF-8");
+		if(path!=null&&title!=null&&createtime!=null&&isfinish!=null){
+			AndWrite_insert a1=new  AndWrite_insert();
+			a1.insertdata(Uid, Cid, path, as, createtime, asd);	
+			System.out.println("SS"+Uid+":"+ Cid+":"+ path+":"+ as+":"+ createtime+":"+asd);
+		}
 		
-			ForIndex forindex = new ForIndex();
-			List<IndexBean> list = new ArrayList<IndexBean>();
-		
-			list= forindex.getIndexData();
-			Gson gson = new Gson();
-			String result  = gson.toJson(list);
-			mPrintWriter.write(result);
-			mPrintWriter.close();
-			System.out.println(result);
-	
-		
+		System.out.println(""+Uid+":"+ Cid+":"+ path+":"+ as+":"+ createtime+":"+asd);
 	}
 
 	/**

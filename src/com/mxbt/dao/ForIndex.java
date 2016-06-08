@@ -4,8 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.mxbt.beans.IndexBean;
 import com.mxbt.utils.C3P0Utils;
@@ -18,6 +25,8 @@ public class ForIndex {
 	private ResultSet result2 = null;
 	private PreparedStatement state3 = null;
 	private ResultSet result3 = null;
+	
+	
 
 
 	public List<IndexBean> getIndexData() {
@@ -958,9 +967,6 @@ public class ForIndex {
 									indexBean.setContent(result3.getString(1));
 								}
 							}
-
-				
-						
 					
 					list.add(indexBean);
 				}
@@ -989,4 +995,56 @@ public class ForIndex {
 
 		}
 		
+		//判断收藏是否更新
+		public Set<String> isCollect(){
+			 Set<String> set=new HashSet<String>();
+			connection=C3P0Utils.getConnection();
+			try {
+				state=connection.prepareStatement("SELECT Atitle,Ccreatetime FROM collect,article,chapter WHERE COaid=Aid AND Aid=Caid AND Ctid=0 GROUP BY Cid");
+				result=state.executeQuery();
+				while (result.next()) {				
+					result.getString("Ccreatetime");			
+					if(StringToData(result.getString("Ccreatetime")).equals(NowTime())){
+						 set.add(result.getString("Atitle"));
+					System.out.print(result.getString("Atitle")+"\n");
+					}else {
+						//set.add(result.getString("Atitle"));
+						System.out.print(result.getString("Atitle")+"  无更新\n");
+					}
+					
+					//set.add();					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				C3P0Utils.close(result, state, connection);
+			}
+			return set;
+		}
+		
+		// 系统当前时间
+		public String NowTime() {
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// 设置日期格式
+			return df.format(new Date());// new Date()为获取当前系统时间
+
+		}
+	//把string类型转为date类型
+		public static String StringToData(String date){
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date myDate=null;
+			try { 
+
+				myDate= formatter.parse(date);
+				Calendar c = Calendar.getInstance();
+				c.setTime(myDate);
+				c.add(Calendar.DAY_OF_MONTH, 2);
+				myDate = c.getTime();
+				} catch (ParseException e1) {
+				e1.printStackTrace();
+				}
+			
+				return formatter.format(myDate);
+			
+		}
 }

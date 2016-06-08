@@ -2,6 +2,8 @@ package com.mxbt.beans;
 
 import java.io.Serializable;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 public class Write_ReadBean implements Serializable {
 	
 	private String write_articleName;
@@ -10,12 +12,14 @@ public class Write_ReadBean implements Serializable {
 	private String write_ChapterAuthor;
 	private String write_ChapterAuthorName;
 	private String write_ArticleTime;
+	private boolean voteFlag;
+	private boolean focusFlag;
 	
 	public Write_ReadBean(){}
 	
 	public Write_ReadBean(String write_articleName, String write_ChapterName,
 			String write_ChapterContent, String write_ChapterAuthor,
-			String write_ChapterAuthorName, String write_ArticleTime) {
+			String write_ChapterAuthorName, String write_ArticleTime,boolean voteFlag,boolean focusFlag) {
 		super();
 		this.write_articleName = write_articleName;
 		this.write_ChapterName = write_ChapterName;
@@ -23,7 +27,27 @@ public class Write_ReadBean implements Serializable {
 		this.write_ChapterAuthor = write_ChapterAuthor;
 		this.write_ChapterAuthorName = write_ChapterAuthorName;
 		this.write_ArticleTime = write_ArticleTime;
+		this.voteFlag=voteFlag;
+		this.focusFlag=focusFlag;
 	}
+	
+	
+	public boolean isVoteFlag() {
+		return voteFlag;
+	}
+
+	public void setVoteFlag(boolean voteFlag) {
+		this.voteFlag = voteFlag;
+	}
+
+	public boolean isfocusFlag() {
+		return focusFlag;
+	}
+
+	public void setfocusFlag(boolean focusFlag) {
+		this.focusFlag = focusFlag;
+	}
+
 	public String getWrite_articleName() {
 		return write_articleName;
 	}

@@ -55,9 +55,9 @@ public class Wallet_servlet extends HttpServlet {
 		
 		
 		if(request.getParameter("goldNum")==null){
-			Uid=Integer.valueOf(request.getParameter("Uid"));
+			Uid=Integer.valueOf(request.getParameter("User_id"));
 		}else{
-			 Uid=Integer.valueOf(request.getParameter("Uid"));
+			 Uid=Integer.valueOf(request.getParameter("User_id"));
 			 goldNum=Integer.valueOf(request.getParameter("goldNum"));
 			 mGetWallet.SetGoldNum(Uid,goldNum);
 			 

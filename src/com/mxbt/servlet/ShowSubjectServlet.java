@@ -50,7 +50,8 @@ public class ShowSubjectServlet extends HttpServlet {
 			String result=gson.toJson(mList);
 			pw.write(result);
 			pw.close();
-			System.out.println("已获取后台专题Bean！");
+			System.out.println("已获取后台所有的SubjectBean！");
+			System.out.println(result);
 		}
 	}
 
