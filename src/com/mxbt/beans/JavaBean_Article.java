@@ -21,6 +21,8 @@ public class JavaBean_Article {
 	private String author_sex;     //作者性别
 	private int focus_number;      //关注数
 	private int reader_number;     //读者
+	private boolean recommandFalg;  //判断是否推荐
+	private boolean collectFalg;  //判断是否收藏
 	
 	public JavaBean_Article(){}
 	
@@ -33,7 +35,8 @@ public class JavaBean_Article {
 			String author_sex, int focus_number, int reader_number,
 			List<String> author_chapter_name,List<String> chapter_content,
 			List<String> chapter_number,List<String> create_chapter_time
-			,List<String> author_chapter_head,int chapter_id) {
+			,List<String> author_chapter_head,int chapter_id,
+			boolean recommandFalg,boolean collectFalg) {
 		super();
 		this.author_name = author_name;
 		this.article_chapter = article_chapter;
@@ -51,6 +54,32 @@ public class JavaBean_Article {
 		this.create_chapter_time=create_chapter_time;
 		this.author_chapter_head=author_chapter_head;
 		this.chapter_id=chapter_id;
+		this.recommandFalg=recommandFalg;
+		this.collectFalg=collectFalg;
+	}
+
+
+
+	public boolean isRecommandFalg() {
+		return recommandFalg;
+	}
+
+
+
+	public void setRecommandFalg(boolean recommandFalg) {
+		this.recommandFalg = recommandFalg;
+	}
+
+
+
+	public boolean isCollectFalg() {
+		return collectFalg;
+	}
+
+
+
+	public void setCollectFalg(boolean collectFalg) {
+		this.collectFalg = collectFalg;
 	}
 
 
