@@ -11,23 +11,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.mxbt.beans.IndexBean;
 import com.mxbt.beans.SubjectArticleBean;
-import com.mxbt.beans.SubjectBean;
-import com.mxbt.dao.SelectSubject;
+import com.mxbt.dao.LableContent;
 import com.mxbt.dao.ThemeContent;
 
 /**
- * Servlet implementation class ShowSubjectArticle
+ * Servlet implementation class ShowLableArticleServlet
  */
-@WebServlet("/showSubjectArticleServlet")
-public class ShowSubjectArticleServlet extends HttpServlet {
+@WebServlet("/showLableArticleServlet")
+public class ShowLableArticleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ShowSubjectArticleServlet() {
+    public ShowLableArticleServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,21 +43,20 @@ public class ShowSubjectArticleServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int  sid=Integer.parseInt(request.getParameter("sid"));
+		//int Lid=1;
+		int  Lid=Integer.parseInt(request.getParameter("Lid"));
 		List<SubjectArticleBean> mList=null;
-		ThemeContent select=new ThemeContent();
+		LableContent select=new LableContent();
 		PrintWriter pw=response.getWriter();
-		mList=select.selectAllArticles(sid);
+		mList=select.selectAllArticles(Lid);
 		if(mList!=null){
 			Gson gson=new Gson();
 			String result=gson.toJson(mList);
 			pw.write(result);
 			pw.close();
-			System.out.println("每个专题对应的文章已查询！");
+			System.out.println("标签id为："+Lid+"对应的文章已查询！");
 			System.out.println(result.toString());
 		}
-		
-		
 	}
 
 }
