@@ -1,11 +1,9 @@
 package com.mxbt.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,27 +11,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
-
-
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.mxbt.beans.IndexBean;
-import com.mxbt.dao.ForIndex;
+import com.mxbt.beans.Users;
+import com.mxbt.dao.ForEdit;
 
 /**
- * Servlet implementation class index_servlet
+ * Servlet implementation class User_edit
  */
-@WebServlet("/index_servlet")
-public class index_servlet extends HttpServlet {
+@WebServlet("/user_edit")
+public class User_edit extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String name=null;
-	PrintWriter mPrintWriter;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public index_servlet() {
+    public User_edit() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,19 +36,17 @@ public class index_servlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-			mPrintWriter = response.getWriter();
-		
-			ForIndex forindex = new ForIndex();
-			List<IndexBean> list = new ArrayList<IndexBean>();
-		
-			list= forindex.getIndexData();
-			Gson gson = new Gson();
-			String result  = gson.toJson(list);
-			mPrintWriter.write(result);
-			mPrintWriter.close();
-			System.out.println(result);
-	
-		
+		String userJson = request.getParameter("user");
+		Gson gson = new Gson();
+	    Type type = new TypeToken<Users>() {
+        }.getType();
+        Users user = gson.fromJson(userJson, type);
+        List<Integer> list = new ArrayList<>();
+        ForEdit forEdit = new ForEdit();
+        list = forEdit.editImg(user);
+        int uHeadId = list.get(1);
+        int uBk = list.get(0);
+        forEdit.editUser(user, uHeadId, uBk);
 	}
 
 	/**
