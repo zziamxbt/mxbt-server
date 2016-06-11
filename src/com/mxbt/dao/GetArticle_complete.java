@@ -40,7 +40,7 @@ public class GetArticle_complete {
 	private List<String> mResultSet_chapter_numberList = new ArrayList<String>();
 	private List<String> mResultSet_create_chapter_timeList = new ArrayList<String>();
 
-	// 得到文章的id，获取文章的封面
+	// 得到文章的id，获取文章的封面并且判断此文章是否被收藏和推荐
 
 	public List<JavaBean_Article> SelectArticle(int aid, int User_Id) {
 		int Article_id = aid;
@@ -218,6 +218,168 @@ public class GetArticle_complete {
 			C3P0Utils.close(mResultSet_type, mStatement_type, null);
 			C3P0Utils.close(mResultSet_ubk, mStatement_ubk, null);
 			C3P0Utils.close(mResultSet_uhead, mStatement_uhead, null);
+
+
+		}
+		return mlist;
+
+	}
+	
+	
+	// 得到文章的id，获取文章的封面
+
+	public List<JavaBean_Article> SelectArticleNo(int aid) {
+		int Article_id = aid;
+		// System.out.print(Article_id+"RRRRRRRRRRRRRRRRRRRRRRR");
+		try {
+			mConnection = C3P0Utils.getConnection();
+			mStatement = mConnection
+					.prepareStatement("SELECT * FROM article WHERE Aid="
+							+ Article_id);
+			mResultSet = mStatement.executeQuery();
+			if (mResultSet.next()) {
+				mBean_Article = new JavaBean_Article();
+
+				mStatement_cover = mConnection
+						.prepareStatement("SELECT Ipath FROM image WHERE Iid="
+								+ mResultSet.getString("Acoverimg"));
+				mStatement_type = mConnection
+						.prepareStatement("SELECT Content FROM kind WHERE Kid="
+								+ mResultSet.getString("Akind"));
+				mStatement_author = mConnection
+						.prepareStatement("SELECT Unickname,Uhead,Ubk,Usex FROM user WHERE Uid="
+								+ mResultSet.getString("Aauthor"));
+				mStatement_chapter_author = mConnection
+						.prepareStatement("SELECT Unickname,Ipath FROM USER,chapter,image  WHERE  Cauthor=Uid AND Caid="
+								+ Article_id + " AND Iid=Uid ORDER BY Cnum ASC");
+				// 获取文章的内容,章节号和章节创建的时间
+				mStatement_chapter_content = mConnection
+						.prepareStatement("SELECT Cid,Tpath,Ctitle,Ccreatetime FROM TEXT,chapter  WHERE Ctid=Tid AND Caid="
+								+ Article_id + " ORDER BY Cnum ASC");
+				mStatement_focus = mConnection
+						.prepareStatement("SELECT COUNT(Fbefocused) FROM focus,article WHERE Aid="
+								+ Article_id + " AND Aauthor=Fbefocused");
+				mStatement_reader = mConnection
+						.prepareStatement("SELECT COUNT(RECuid) FROM recentread WHERE RECaid="
+								+ Article_id);
+				
+			
+                mResultSet_focus=mStatement_focus.executeQuery();
+				mResultSet_reader = mStatement_reader.executeQuery();
+				mResultSet_cover = mStatement_cover.executeQuery();
+				mResultSet_type = mStatement_type.executeQuery();
+				mResultSet_author = mStatement_author.executeQuery();
+				mResultSet_chapter_author = mStatement_chapter_author
+						.executeQuery();
+				mResultSet_chapter_content = mStatement_chapter_content
+						.executeQuery();
+				
+
+				// 文章名
+				mBean_Article.setArticle_title(mResultSet.getString("Atitle"));
+				
+				// 获取读者
+				if (mResultSet_reader.next()) {
+					mBean_Article.setReader_number(mResultSet_reader.getInt(1));
+				}
+				// 获取关注数
+				if (mResultSet_focus.next()) {
+					mBean_Article.setFocus_number(mResultSet_focus.getInt(1));
+				}
+				// 文章类型
+				if (mResultSet_type.next()) {
+					mBean_Article.setArticle_type(mResultSet_type
+							.getString("Content"));
+				}
+				// 文章作者,背景图,性别和作者头像
+				if (mResultSet_author.next()) {
+					mBean_Article.setAuthor_sex(mResultSet_author
+							.getString("Usex"));
+					mBean_Article.setAuthor_name(mResultSet_author
+							.getString("Unickname"));
+
+					mStatement_uhead = mConnection
+							.prepareStatement("SELECT Ipath FROM image WHERE Iid="
+									+ mResultSet_author.getString("Uhead"));
+					mStatement_ubk = mConnection
+							.prepareStatement("SELECT Ipath FROM image WHERE Iid="
+									+ mResultSet_author.getString("Ubk"));
+
+					mResultSet_uhead = mStatement_uhead.executeQuery();
+					mResultSet_ubk = mStatement_ubk.executeQuery();
+					if (mResultSet_uhead.next()) {
+						mBean_Article.setAuthor_headportrait(mResultSet_uhead
+								.getString("Ipath"));
+					}
+					if (mResultSet_ubk.next()) {
+						mBean_Article.setArticle_background(mResultSet_ubk
+								.getString("Ipath"));
+					}
+
+				}
+				// 文章封面
+				if (mResultSet_cover.next()) {
+					mBean_Article.setArticle_cover(mResultSet_cover
+							.getString("Ipath"));
+				}
+				// 文章每个章节的作者
+				while (mResultSet_chapter_author.next()) {
+
+					mResultSet_chapter_authorList.add(mResultSet_chapter_author
+							.getString("Unickname"));
+					mResultSet_author_chapter_headList
+							.add(mResultSet_chapter_author.getString("Ipath"));
+
+				}
+				mBean_Article
+						.setAuthor_chapter_name(mResultSet_chapter_authorList);
+				mBean_Article
+						.setAuthor_chapter_head(mResultSet_author_chapter_headList);
+				
+				// 文章每个章节的内容，章节号和创建章节时间
+				while (mResultSet_chapter_content.next()) {
+					if (mResultSet_chapter_content.getString("Tpath") != null) {
+						mResultSet_chapter_contentList.add(httpString
+								.getHttpString(mResultSet_chapter_content
+										.getString("Tpath")));
+						mResultSet_chapter_numberList
+								.add(mResultSet_chapter_content
+										.getString("Ctitle"));
+						mResultSet_create_chapter_timeList
+								.add(mResultSet_chapter_content
+										.getString("Ccreatetime"));
+					} else {
+						mBean_Article.setChapter_id(mResultSet_chapter_content
+								.getInt("Cid"));
+					}
+
+				}
+				mBean_Article.setChapter_number(mResultSet_chapter_numberList);
+				mBean_Article
+						.setChapter_content(mResultSet_chapter_contentList);
+				mBean_Article
+						.setCreate_chapter_time(mResultSet_create_chapter_timeList);
+			}
+			// 获取关注数
+
+			mlist.add(mBean_Article);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			C3P0Utils.close(mResultSet, mStatement, mConnection);
+			C3P0Utils.close(mResultSet_author, mStatement_author, null);
+			C3P0Utils.close(mResultSet_chapter_author,
+					mStatement_chapter_author, null);
+			C3P0Utils.close(mResultSet_chapter_content,
+					mStatement_chapter_content, null);
+			C3P0Utils.close(mResultSet_cover, mStatement_cover, null);
+			C3P0Utils.close(mResultSet_focus, mStatement_focus, null);
+			C3P0Utils.close(mResultSet_reader, mStatement_reader, null);
+			C3P0Utils.close(mResultSet_type, mStatement_type, null);
+			C3P0Utils.close(mResultSet_ubk, mStatement_ubk, null);
+			C3P0Utils.close(mResultSet_uhead, mStatement_uhead, null);
 			C3P0Utils.close(mResultSet_recommand, mStatement_recommand, null);
 			C3P0Utils.close(mResultSet_collect, mStatement_collect, null);
 
@@ -225,6 +387,7 @@ public class GetArticle_complete {
 		return mlist;
 
 	}
+
 
 	// 对推荐表进行修改
 	public void ChargeRecommend(String flag, int aid, int User_Id) {
@@ -278,5 +441,7 @@ public class GetArticle_complete {
 		return df.format(new Date());// new Date()为获取当前系统时间
 
 	}
+
+
 
 }

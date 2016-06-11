@@ -19,6 +19,7 @@ public class IndexBean implements Serializable{
 	String title;
 	String content;
 	
+	
 
 	public int  getArticleId() {
 		return articleId;
