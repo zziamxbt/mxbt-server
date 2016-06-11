@@ -2,12 +2,13 @@ package com.mxbt.beans;
 
 import java.io.Serializable;
 
-public class Users implements Serializable {
+public class SearchBean implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private int Uid;//主键
     private String Uhead;//头像
     private String Ubk;//背景图片
@@ -17,14 +18,16 @@ public class Users implements Serializable {
     private String Ucountry;//国家
     private String Usign;//个性签名
     private String Upassword;//密码
-    private String Utoken;//token
-	
-	public Users(){
-		
-	}
+    private int Aid;//文章id
+    private String Atitle;//文章标题
+    
+    public SearchBean(){
+    	
+    }
 
-	public Users(int uid, String uhead, String ubk, String uname, String unickname,
-			String usex, String ucountry, String usign, String upassword) {
+	public SearchBean(int uid, String uhead, String ubk, String uname,
+			String unickname, String usex, String ucountry, String usign,
+			String upassword, int aid, String atitle) {
 		super();
 		Uid = uid;
 		Uhead = uhead;
@@ -35,6 +38,8 @@ public class Users implements Serializable {
 		Ucountry = ucountry;
 		Usign = usign;
 		Upassword = upassword;
+		Aid = aid;
+		Atitle = atitle;
 	}
 
 	public int getUid() {
@@ -109,18 +114,31 @@ public class Users implements Serializable {
 		Upassword = upassword;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public int getAid() {
+		return Aid;
+	}
+
+	public void setAid(int aid) {
+		Aid = aid;
+	}
+
+	public String getAtitle() {
+		return Atitle;
+	}
+
+	public void setAtitle(String atitle) {
+		Atitle = atitle;
 	}
 
 	@Override
 	public String toString() {
-		return "Users [Uid=" + Uid + ", Uhead=" + Uhead + ", Ubk=" + Ubk
+		return "SearchBean [Uid=" + Uid + ", Uhead=" + Uhead + ", Ubk=" + Ubk
 				+ ", Uname=" + Uname + ", Unickname=" + Unickname + ", Usex="
 				+ Usex + ", Ucountry=" + Ucountry + ", Usign=" + Usign
-				+ ", Upassword=" + Upassword + "]";
+				+ ", Upassword=" + Upassword + ", Aid=" + Aid + ", Atitle="
+				+ Atitle + "]";
 	}
-	
-	
+    
+    
 
 }
