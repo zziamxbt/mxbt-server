@@ -52,11 +52,13 @@ public class RegistCheckServlet extends HttpServlet {
 		}
 		else {
 			//返回false,说明没有此用户，跳转到注册成功页面\
-			s.addUser(username, password);
+			String token=s.gettoken(username);
+			s.addUser(username, password,token);
 			pw.write("Success,注册用户成功！");
 			System.out.println("Success,注册用户成功！");
 			
 		}
+		
 	}
 
 }

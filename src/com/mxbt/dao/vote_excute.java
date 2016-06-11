@@ -25,7 +25,7 @@ public class vote_excute {
 	private ResultSet res2;
 	int Uid;
 	int x;
-
+	int sum;
 	public List<vote_content> getdata(String Cid) {
 		x = Integer.parseInt(Cid);
 		List<vote_content> list = new ArrayList<vote_content>();
@@ -100,6 +100,28 @@ public class vote_excute {
 		}
 		return list;
 
+	}
+	public void select_good_insert(int AWid){
+		try {
+			connection=C3P0Utils.getConnection();
+			state=connection.prepareStatement("select count(*) from andwrite_good where Gawid="+AWid);
+			result=state.executeQuery();
+			while(result.next()){
+				sum=result.getInt(1);
+			}
+			state2=connection.prepareStatement("update andwrite set AWvote=? where AWid=?");
+			state2.setInt(1, sum);
+			state2.setInt(2, AWid);
+			state2.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			C3P0Utils.close(result, state, connection);
+			C3P0Utils.close(result, state2, connection);
+		}
+		
+		
 	}
 
 	public void updatenum(int Uid,String Cid) {

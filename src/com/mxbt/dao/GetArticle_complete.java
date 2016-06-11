@@ -61,7 +61,7 @@ public class GetArticle_complete {
 						.prepareStatement("SELECT Content FROM kind WHERE Kid="
 								+ mResultSet.getString("Akind"));
 				mStatement_author = mConnection
-						.prepareStatement("SELECT Unickname,Uhead,Ubk,Usex FROM user WHERE Uid="
+						.prepareStatement("SELECT Uname,Unickname,Uhead,Ubk,Usex FROM user WHERE Uid="
 								+ mResultSet.getString("Aauthor"));
 				mStatement_chapter_author = mConnection
 						.prepareStatement("SELECT Unickname,Ipath FROM USER,chapter,image  WHERE  Cauthor=Uid AND Caid="
@@ -115,6 +115,7 @@ public class GetArticle_complete {
 				}
 				// 文章作者,背景图,性别和作者头像
 				if (mResultSet_author.next()) {
+					mBean_Article.setAuthor_Uname(mResultSet_author.getString("Uname"));
 					mBean_Article.setAuthor_sex(mResultSet_author
 							.getString("Usex"));
 					mBean_Article.setAuthor_name(mResultSet_author

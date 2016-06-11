@@ -10,6 +10,7 @@ public class JavaBean_Article {
 	private List<String> chapter_number;//文章章节的章节号
 	private List<String> create_chapter_time;//创建文章章节时间
 	private List<String> author_chapter_head;//文章章节作者的头像
+	private String author_Uname;  //文章作者的手机号
 	private int chapter_id; //章节id
 	private String author_name;  //文章的作者
 	private String article_chapter;  //文章的章节
@@ -36,7 +37,7 @@ public class JavaBean_Article {
 			List<String> author_chapter_name,List<String> chapter_content,
 			List<String> chapter_number,List<String> create_chapter_time
 			,List<String> author_chapter_head,int chapter_id,
-			boolean recommandFalg,boolean collectFalg) {
+			boolean recommandFalg,boolean collectFalg,String author_Uname) {
 		super();
 		this.author_name = author_name;
 		this.article_chapter = article_chapter;
@@ -56,6 +57,19 @@ public class JavaBean_Article {
 		this.chapter_id=chapter_id;
 		this.recommandFalg=recommandFalg;
 		this.collectFalg=collectFalg;
+		this.author_Uname=author_Uname;
+	}
+
+
+
+	public String getAuthor_Uname() {
+		return author_Uname;
+	}
+
+
+
+	public void setAuthor_Uname(String author_Uname) {
+		this.author_Uname = author_Uname;
 	}
 
 
