@@ -80,11 +80,16 @@ public class SelectUser {
 		return user;
 		
 	}
+	
+	
+
+	
+	
 	public void addUser(String uname,String upassword){
 		Connection connection = C3P0Utils.getConnection();
 		PreparedStatement statement=null;
 		//向表中加入该用户
-		String sql="INSERT INTO USER(Uhead,Ubk,Uname,Unickname,Usex,Ucountry,Usign,Upassword) VALUES(?,?,?,?,?,?,?,?)";
+		String sql="INSERT INTO USER(Uhead,Ubk,Uname,Unickname,Usex,Ucountry,Usign,Upassword,Utoken) VALUES(?,?,?,?,?,?,?,?,?)";
 		try {
 			statement=connection.prepareStatement(sql);
 			statement.setInt(1,1);
@@ -95,6 +100,7 @@ public class SelectUser {
 			statement.setString(6,"China");
 			statement.setString(7,"时光如戏，岁月无音....");
 			statement.setString(8,upassword);
+			
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
