@@ -39,6 +39,7 @@ public class GetArticle_complete {
 	private List<String> mResultSet_chapter_contentList = new ArrayList<String>();
 	private List<String> mResultSet_chapter_numberList = new ArrayList<String>();
 	private List<String> mResultSet_create_chapter_timeList = new ArrayList<String>();
+	private List<Integer> user_id = new ArrayList<Integer>();
 
 	// 得到文章的id，获取文章的封面并且判断此文章是否被收藏和推荐
 
@@ -64,8 +65,8 @@ public class GetArticle_complete {
 						.prepareStatement("SELECT Unickname,Uhead,Ubk,Usex FROM user WHERE Uid="
 								+ mResultSet.getString("Aauthor"));
 				mStatement_chapter_author = mConnection
-						.prepareStatement("SELECT Unickname,Ipath FROM USER,chapter,image  WHERE  Cauthor=Uid AND Caid="
-								+ Article_id + " AND Iid=Uid ORDER BY Cnum ASC");
+						.prepareStatement("SELECT Cauthor,Unickname,Ipath FROM USER,chapter,image  WHERE  Cauthor=Uid AND Caid="
+								+ Article_id + " AND Iid=Uhead ORDER BY Cnum ASC");
 				// 获取文章的内容,章节号和章节创建的时间
 				mStatement_chapter_content = mConnection
 						.prepareStatement("SELECT Cid,Tpath,Ctitle,Ccreatetime FROM TEXT,chapter  WHERE Ctid=Tid AND Caid="
@@ -146,13 +147,14 @@ public class GetArticle_complete {
 				}
 				// 文章每个章节的作者
 				while (mResultSet_chapter_author.next()) {
-
+					user_id.add(mResultSet_chapter_author.getInt("Cauthor"));
 					mResultSet_chapter_authorList.add(mResultSet_chapter_author
 							.getString("Unickname"));
 					mResultSet_author_chapter_headList
 							.add(mResultSet_chapter_author.getString("Ipath"));
 
 				}
+				mBean_Article.setUser_id(user_id);
 				mBean_Article
 						.setAuthor_chapter_name(mResultSet_chapter_authorList);
 				mBean_Article
@@ -249,8 +251,8 @@ public class GetArticle_complete {
 						.prepareStatement("SELECT Unickname,Uhead,Ubk,Usex FROM user WHERE Uid="
 								+ mResultSet.getString("Aauthor"));
 				mStatement_chapter_author = mConnection
-						.prepareStatement("SELECT Unickname,Ipath FROM USER,chapter,image  WHERE  Cauthor=Uid AND Caid="
-								+ Article_id + " AND Iid=Uid ORDER BY Cnum ASC");
+						.prepareStatement("SELECT Cauthor,Unickname,Ipath FROM USER,chapter,image  WHERE  Cauthor=Uid AND Caid="
+								+ Article_id + " AND Iid=Uhead ORDER BY Cnum ASC");
 				// 获取文章的内容,章节号和章节创建的时间
 				mStatement_chapter_content = mConnection
 						.prepareStatement("SELECT Cid,Tpath,Ctitle,Ccreatetime FROM TEXT,chapter  WHERE Ctid=Tid AND Caid="
@@ -323,13 +325,14 @@ public class GetArticle_complete {
 				}
 				// 文章每个章节的作者
 				while (mResultSet_chapter_author.next()) {
-
+					user_id.add(mResultSet_chapter_author.getInt("Cauthor"));
 					mResultSet_chapter_authorList.add(mResultSet_chapter_author
 							.getString("Unickname"));
 					mResultSet_author_chapter_headList
 							.add(mResultSet_chapter_author.getString("Ipath"));
 
 				}
+				mBean_Article.setUser_id(user_id);
 				mBean_Article
 						.setAuthor_chapter_name(mResultSet_chapter_authorList);
 				mBean_Article

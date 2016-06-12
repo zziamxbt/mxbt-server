@@ -5,6 +5,7 @@ import java.util.List;
 import javax.management.loading.PrivateClassLoader;
 
 public class JavaBean_Article {
+	private List<Integer> user_id;//文章章节的作者
 	private List<String> author_chapter_name;//文章章节的作者
 	private List<String> chapter_content;//文章章节的内容
 	private List<String> chapter_number;//文章章节的章节号
@@ -36,7 +37,7 @@ public class JavaBean_Article {
 			List<String> author_chapter_name,List<String> chapter_content,
 			List<String> chapter_number,List<String> create_chapter_time
 			,List<String> author_chapter_head,int chapter_id,
-			boolean recommandFalg,boolean collectFalg) {
+			boolean recommandFalg,boolean collectFalg,List<Integer> user_id) {
 		super();
 		this.author_name = author_name;
 		this.article_chapter = article_chapter;
@@ -56,6 +57,22 @@ public class JavaBean_Article {
 		this.chapter_id=chapter_id;
 		this.recommandFalg=recommandFalg;
 		this.collectFalg=collectFalg;
+		this.user_id=user_id;
+	}
+
+
+
+	
+
+
+	public List<Integer> getUser_id() {
+		return user_id;
+	}
+
+
+
+	public void setUser_id(List<Integer> user_id) {
+		this.user_id = user_id;
 	}
 
 
