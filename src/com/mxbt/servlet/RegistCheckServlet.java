@@ -56,12 +56,21 @@ public class RegistCheckServlet extends HttpServlet {
 			// 返回true,说明查到该用户，跳转到注册失败页面
 			pw.write("Failure,该手机号已被注册！");
 			System.out.println("Failure,该手机号已被注册！");
+<<<<<<< HEAD
 		} else {
 			// 返回false,说明没有此用户，跳转到注册成功页面
 			s.addUser(username, password);
+=======
+		}
+		else {
+			//返回false,说明没有此用户，跳转到注册成功页面\
+			String token=s.gettoken(username);
+			s.addUser(username, password,token);
+>>>>>>> 6bdc4683a4e4857ea1c50fba43995a6ec93d7763
 			pw.write("Success,注册用户成功！");
 			System.out.println("Success,注册用户成功！");
 		}
+		
 	}
 
 }
