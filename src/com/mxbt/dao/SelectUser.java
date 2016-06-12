@@ -101,7 +101,15 @@ public class SelectUser {
 		return user;
 		
 	}
+
+	
+	
+
+	
+	
+
 	public void addUser(String uname,String upassword,String token){
+
 		Connection connection = C3P0Utils.getConnection();
 		PreparedStatement statement=null;
 		//向表中加入该用户
@@ -116,7 +124,9 @@ public class SelectUser {
 			statement.setString(6,"China");
 			statement.setString(7,"时光如戏，岁月无音....");
 			statement.setString(8,upassword);
+
 			statement.setString(9,token);
+
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

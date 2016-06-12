@@ -55,14 +55,15 @@ public class Article_complete extends HttpServlet {
 		GetArticle_complete mGetArticle = new GetArticle_complete();
 
 		int aid = Integer.valueOf(request.getParameter("article_id"));
-		System.out.print(aid);
+		System.out.print("文章id"+aid);
 		int User_Id = Integer.valueOf(request.getParameter("User_Id"));
-		// System.out.print("章节id"+aid);
+		System.out.print("用户id"+User_Id);
 		mPrintWriter = response.getWriter();
 		if (User_Id == 0) {
 			mList = mGetArticle.SelectArticleNo(aid);
 			Gson gson = new Gson();
 			String result = gson.toJson(mList);
+			System.out.print("吴龙飞"+result);
 			mPrintWriter.write(result);
 			mPrintWriter.close();
 		} else {
@@ -71,6 +72,7 @@ public class Article_complete extends HttpServlet {
 				mList = mGetArticle.SelectArticle(aid, User_Id);
 				Gson gson = new Gson();
 				String result = gson.toJson(mList);
+				System.out.print("有用户id的："+result);
 				mPrintWriter.write(result);
 				mPrintWriter.close();
 			} else if (Num == 1) {

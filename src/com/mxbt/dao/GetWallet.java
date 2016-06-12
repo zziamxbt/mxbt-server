@@ -14,8 +14,8 @@ public class GetWallet {
 	private List<WalletBean> mList = new ArrayList<WalletBean>();
 	private WalletBean mBean;
 	private Connection mConnection;
-	private PreparedStatement mStatement, mStatement_Uhead, mStatement_Ubk,mStatement_gold;
-	private ResultSet mResultSet, mResultSet_Uhead, mResultSet_Ubk;
+	private PreparedStatement mStatement, mStatement_Uhead, mStatement_Ubk,mStatement_gold,mStatement_reward,mStatement_rewarded;
+	private ResultSet mResultSet, mResultSet_Uhead, mResultSet_Ubk,mResultSet_reward,mResultSet_rewarded;
 
 	public List<WalletBean> getWallet(int Uid) {
 
@@ -61,7 +61,7 @@ public class GetWallet {
 
 		return mList;
 	}
-
+//购买金币数插入数据库中
 	public void SetGoldNum(int Uid,int goldNum) {
 		try {
 			mConnection = C3P0Utils.getConnection();
@@ -74,6 +74,45 @@ public class GetWallet {
 			e.printStackTrace();
 		}finally{
 			C3P0Utils.close(null, mStatement_gold, mConnection);
+		}
+		
+	}
+	
+	//打赏的金币插入数据库中
+	public void SetRewardGold(int Uid,int Authorid,int goldNum) {
+		try {
+			mConnection = C3P0Utils.getConnection();
+			mStatement = mConnection
+					.prepareStatement("SELECT COUNT(*) FROM reward WHERE RErewarder="+Uid
+							+ " AND RErewarded="+Authorid);
+			mResultSet=mStatement.executeQuery();
+			if(mResultSet.next()){
+				if(mResultSet.getInt(1)==0){
+					mStatement_gold=mConnection.prepareStatement("INSERT INTO reward(RErewarder,RErewarded,REmoney) VALUES("+Uid
+							+ ","+Authorid
+							+ ","+goldNum+ ")");
+					mStatement_gold.executeUpdate();
+
+				}else{
+					mStatement_gold=mConnection.prepareStatement("UPDATE reward SET REmoney="+goldNum
+							+ " WHERE RErewarder="+Uid
+							+ " AND RErewarded="+Authorid);
+					mStatement_gold.executeUpdate();
+				}
+				mStatement_reward=mConnection.prepareStatement("UPDATE wallet SET Wbalance=Wbalance-"+goldNum+" WHERE WUid="+Uid);
+				mStatement_rewarded=mConnection.prepareStatement("UPDATE wallet SET Wbalance=Wbalance+"+goldNum+" WHERE WUid="+Authorid);
+				mStatement_reward.executeUpdate();
+				mStatement_rewarded.executeUpdate();
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			C3P0Utils.close(mResultSet, mStatement, mConnection);
+			C3P0Utils.close(null, mStatement_gold, null);
+			C3P0Utils.close(null, mStatement_reward, null);
+			C3P0Utils.close(null, mStatement_rewarded, null);
 		}
 		
 	}
