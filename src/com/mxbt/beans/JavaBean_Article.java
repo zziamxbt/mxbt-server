@@ -245,6 +245,14 @@ public class JavaBean_Article {
 		this.reader_number = reader_number;
 	}
 
+	public int getChapter_id() {
+		return chapter_id;
+	}
+
+	public void setChapter_id(int chapter_id) {
+		this.chapter_id = chapter_id;
+	}
+
 
 
 	@Override
@@ -253,42 +261,16 @@ public class JavaBean_Article {
 				+ ", chapter_content=" + chapter_content + ", chapter_number="
 				+ chapter_number + ", create_chapter_time="
 				+ create_chapter_time + ", author_chapter_head="
-				+ author_chapter_head + ", author_name=" + author_name
+				+ author_chapter_head + ", author_Uname=" + author_Uname
+				+ ", chapter_id=" + chapter_id + ", author_name=" + author_name
 				+ ", article_chapter=" + article_chapter + ", article_cover="
 				+ article_cover + ", article_background=" + article_background
 				+ ", article_title=" + article_title + ", article_type="
 				+ article_type + ", author_headportrait=" + author_headportrait
 				+ ", author_sex=" + author_sex + ", focus_number="
 				+ focus_number + ", reader_number=" + reader_number
-				+ ", getAuthor_chapter_head()=" + getAuthor_chapter_head()
-				+ ", getCreate_chapter_time()=" + getCreate_chapter_time()
-				+ ", getChapter_content()=" + getChapter_content()
-				+ ", getChapter_number()=" + getChapter_number()
-				+ ", getArticle_title()=" + getArticle_title()
-				+ ", getAuthor_chapter_name()=" + getAuthor_chapter_name()
-				+ ", getArticle_background()=" + getArticle_background()
-				+ ", getAuthor_name()=" + getAuthor_name()
-				+ ", getArticle_chapter()=" + getArticle_chapter()
-				+ ", getArticle_cover()=" + getArticle_cover()
-				+ ", getArticle_type()=" + getArticle_type()
-				+ ", getAuthor_headportrait()=" + getAuthor_headportrait()
-				+ ", getAuthor_sex()=" + getAuthor_sex()
-				+ ", getFocus_number()=" + getFocus_number()
-				+ ", getReader_number()=" + getReader_number()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
-	}
-
-
-
-	public int getChapter_id() {
-		return chapter_id;
-	}
-
-
-
-	public void setChapter_id(int chapter_id) {
-		this.chapter_id = chapter_id;
+				+ ", recommandFalg=" + recommandFalg + ", collectFalg="
+				+ collectFalg + "]";
 	}
 	
 		
