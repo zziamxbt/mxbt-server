@@ -12,14 +12,24 @@ import java.sql.SQLException;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.Gson;
 import com.mxbt.beans.Result;
 import com.mxbt.beans.Users;
+import com.mxbt.beans.user_info;
 import com.mxbt.utils.C3P0Utils;
 
 public class SelectUser {
 	String key = "mgb7ka1nbtm7g";//替换成您的appkey
 	String secret = "zehfoaH1FP";//替换成匹配上面key的secret
+	List<user_info> list;
+	Connection connection;
+	PreparedStatement state;
+	ResultSet result;
+	PreparedStatement state2;
+	ResultSet result2;
 	public boolean selecUser(String uname){
 		Connection connection=C3P0Utils.getConnection();
 		PreparedStatement statement=null;
@@ -144,6 +154,34 @@ public class SelectUser {
 		}
 		String a = token.getResult().getToken();
 		return a;
+		
+	}
+	public List<user_info> alluser(){
+		list=new ArrayList<user_info>();
+		user_info info=null;
+		connection=C3P0Utils.getConnection();
+		try {
+			state=connection.prepareStatement("select Uname,Unickname,Uhead from user");
+			result=state.executeQuery();
+			while(result.next()){
+				info=new user_info();	
+				info.setUname(result.getString("Uname"));
+				info.setUnickname(result.getString("Unickname"));
+				state2=connection.prepareStatement("select Ipath from image where Iid ="+result.getInt("Uhead"));
+				result2=state2.executeQuery();
+				while(result2.next()){
+					info.setUhead(result2.getString("Ipath"));
+				}
+				list.add(info);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			C3P0Utils.close(result, state, connection);
+			C3P0Utils.close(result2, state2, connection);
+		}
+		return list;
 		
 	}
 }

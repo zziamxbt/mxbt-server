@@ -17,8 +17,13 @@ public class Users implements Serializable {
     private String Ucountry;//国家
     private String Usign;//个性签名
     private String Upassword;//密码
+<<<<<<< HEAD
+	private String Utoken;
+
+=======
 
     private String Utoken;//token
+>>>>>>> efc0dfdbf45c166a02eb1d3d0bd7fa7fce39c66f
 	
 
 	public Users(){
