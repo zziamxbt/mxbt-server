@@ -118,7 +118,7 @@ public class rank_excute2 {
 				result2 = state2.executeQuery();
 				while (result2.next()) {
 					Aid = result2.getInt("Aid");
-
+					novel.setAid(Aid);
 					novel.setTitle(result2.getString("Atitle"));
 					sta = connection
 							.prepareStatement("select Ipath from image where Iid ="
@@ -188,28 +188,32 @@ public class rank_excute2 {
 						Caid = result2.getInt("Caid");
 						novel.setUpdatetime(result2.getString("Ccreatetime"));
 						novel.setIsfinish(result2.getString("isfinish"));
-						String sql3 = "select * from user where Uid="
-								+ result2.getInt("Cauthor");
-						state3 = connection.prepareStatement(sql3);
-						result3 = state3.executeQuery();
-						while (result3.next()) {
-							novel.setNickname(result3.getString("Unickname"));
-							sta2 = connection
-									.prepareStatement("select Ipath from image where Iid="
-											+ result3.getInt("Uhead"));
-							res2 = sta2.executeQuery();
-							while (res2.next()) {
-								novel.setHead(res2.getString("Ipath"));
-							}
+					
 						}
 						String sql4 = "select * from article where Aid=" + Caid;
 						state4 = connection.prepareStatement(sql4);
 						result4 = state4.executeQuery();
 						while (result4.next()) {
-
+							novel.setAid(result4.getInt("Aid"));
 							novel.setTitle(result4.getString("Atitle"));
+							
+							String sql3 = "select * from user where Uid="
+									+ result4.getInt("Aauthor");
+							state3 = connection.prepareStatement(sql3);
+							result3 = state3.executeQuery();
+							while (result3.next()) {
+								novel.setNickname(result3.getString("Unickname"));
+								sta2 = connection
+										.prepareStatement("select Ipath from image where Iid="
+												+ result3.getInt("Uhead"));
+								res2 = sta2.executeQuery();
+								while (res2.next()) {
+									novel.setHead(res2.getString("Ipath"));
+								}
+								
 							sta = connection.prepareStatement("select Ipath from image where Iid ="+ result4.getInt("Acoverimg"));
 							res = sta.executeQuery();
+						
 							while (res.next()) {
 								novel.setCoverimg(res.getString("Ipath"));
 							}

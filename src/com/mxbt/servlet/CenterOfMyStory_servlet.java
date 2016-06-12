@@ -46,8 +46,13 @@ public class CenterOfMyStory_servlet extends HttpServlet {
 			System.out.println("centerofmystory"+uid);
 			ForCenter forCenter = new ForCenter();
 			List<IndexBean> list = new ArrayList<IndexBean>();
-			
-			list= forCenter.MyStory(uid);
+			List<IndexBean> list2 = new ArrayList<IndexBean>();
+			List<IndexBean> list3 = new ArrayList<IndexBean>();
+			list2= forCenter.MyStory(uid);
+			list3=forCenter.MyStory2(uid);
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@"+list3.toString());
+			list.addAll(list3);
+			list.addAll(list2);
 			Gson gson = new Gson();
 			String result  = gson.toJson(list);
 			mPrintWriter.write(result);
