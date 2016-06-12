@@ -25,6 +25,21 @@ public class ForIndex {
 	private ResultSet result2 = null;
 	private PreparedStatement state3 = null;
 	private ResultSet result3 = null;
+	private PreparedStatement state4 = null;
+	private ResultSet result4 = null;
+	private PreparedStatement state5 = null;
+	private ResultSet result5 = null;
+	private PreparedStatement state6 = null;
+	private ResultSet result6 = null;
+	
+	int aid;
+	int collectNum;// 收藏数量
+	int recomendNum;// 推荐数量
+	int commentNum;// 评论数量
+	IndexBean indexBean;
+
+
+	
 	
 	
 
@@ -51,6 +66,38 @@ public class ForIndex {
 				indexBean.setArticleId(result.getInt("Aid"));
 				indexBean.setDateTime("" + result.getTimestamp("Adatetime"));
 				indexBean.setTitle(result.getString("Atitle"));
+				
+				
+				
+				aid=result.getInt("Aid");
+				
+				String sql4="SELECT COUNT(*) FROM Collect WHERE COaid="+aid;
+				state4=connection.prepareStatement(sql4);
+				result4=state4.executeQuery();
+				if(result4.next()){
+					collectNum=result4.getInt("COUNT(*)");
+					indexBean.setCollectNum(collectNum);
+				}
+				
+				String sql5="SELECT COUNT(*) FROM Recommend WHERE REaid="+aid;
+				state5=connection.prepareStatement(sql5);
+				result5=state5.executeQuery();
+				if(result5.next()){
+					recomendNum=result5.getInt("COUNT(*)");
+					indexBean.setRecomendNum(recomendNum);
+				}
+				
+				String sql6="SELECT COUNT(*) FROM Article_Comment WHERE ACOaid="+aid;
+				state6=connection.prepareStatement(sql6);
+				result6=state6.executeQuery();
+				if(result6.next()){
+					commentNum=result6.getInt("COUNT(*)");
+					indexBean.setCommentNum(commentNum);
+				}
+				
+				
+				
+				
 				state2 = connection
 						.prepareStatement("select Uhead, Unickname from user where Uid ="
 								+ result.getInt("Aauthor"));
@@ -153,6 +200,11 @@ public class ForIndex {
 				indexBean.setArticleId(result.getInt("Aid"));
 				indexBean.setDateTime("" + result.getTimestamp("Adatetime"));
 				indexBean.setTitle(result.getString("Atitle"));
+				
+				
+				
+				
+				
 				state2 = connection
 						.prepareStatement("select Uhead, Unickname from user where Uid ="
 								+ result.getInt("Aauthor"));

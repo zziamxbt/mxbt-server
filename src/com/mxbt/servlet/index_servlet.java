@@ -47,7 +47,7 @@ public class index_servlet extends HttpServlet {
 		
 			ForIndex forindex = new ForIndex();
 			List<IndexBean> list = new ArrayList<IndexBean>();
-		
+	
 			list= forindex.getIndexData();
 			Gson gson = new Gson();
 			String result  = gson.toJson(list);
