@@ -22,7 +22,7 @@ public class IndexBean implements Serializable{
 	int recomendNum;// 推荐数量
 	int commentNum;// 评论数量
 	
-<<<<<<< HEAD
+
 	public IndexBean(){
 	}
 
@@ -42,9 +42,7 @@ public class IndexBean implements Serializable{
 		this.recomendNum = recomendNum;
 		this.commentNum = commentNum;
 	}
-=======
-	
->>>>>>> 61bf95820a5f7855f92fd7fbb3de08409b06b820
+
 
 	public int getArticleId() {
 		return articleId;
