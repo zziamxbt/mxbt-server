@@ -38,7 +38,7 @@ public class vote_servlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		printWriter=response.getWriter();
-		int AWid=Integer.parseInt(request.getParameter("AWid"));
+		String Uid=request.getParameter("Uid");
 		String flag=request.getParameter("flag");
 		String Cid=request.getParameter("Cid");
 		response.setCharacterEncoding("UTF-8");
@@ -46,9 +46,20 @@ public class vote_servlet extends HttpServlet {
 		
 		vote_excute v1=new vote_excute();
 		List<vote_content> list=new ArrayList<vote_content>();
-		if(flag!=null&&AWid!=0){
-			//开始对赞表进行计数，并插入到续写表中
-			v1.select_good_insert(AWid);
+		if(Uid!=null&&flag!=null){
+			if(flag.equals("false")){
+//				String as=new String(vote_name.getBytes("iso-8859-1"),"UTF-8");
+//				System.out.println("名字:"+as);
+				int U=Integer.parseInt(Uid);
+				v1.updatenum(U,Cid);	
+				System.out.println("更新数据库A");
+			}else{
+
+				int U=Integer.parseInt(Uid);
+				v1.updatenum2(U,Cid);
+				System.out.println("更新数据库B");
+			}
+			
 		}
 		
 		
