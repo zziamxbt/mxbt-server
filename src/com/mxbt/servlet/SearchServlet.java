@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.mxbt.beans.BeautyBean;
 import com.mxbt.beans.LableBean;
 import com.mxbt.beans.SubjectBean;
+import com.mxbt.beans.Users;
+import com.mxbt.dao.SelectAuthor;
+import com.mxbt.dao.SelectBeauty;
 import com.mxbt.dao.SelectLable;
 import com.mxbt.dao.SelectSubject;
 
@@ -44,7 +48,7 @@ public class SearchServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//String search="searchLable";
+		//String search="searchBeauty";
 		String search=request.getParameter("search");
 		if(search.equals("searchTheme")){
 			List<SubjectBean> mList=null;
@@ -77,6 +81,36 @@ public class SearchServlet extends HttpServlet {
 			}
 		}
 		
+		if(search.equals("searchAuthor")){
+			List<Users> mList=null;
+			SelectAuthor select=new SelectAuthor();
+			PrintWriter pw=response.getWriter();
+			mList=select.selectPartAuthor();
+			if(mList!=null){
+				Gson gson=new Gson();
+				String result=gson.toJson(mList);
+				pw.write(result);
+				pw.close();
+				System.out.println("已获取后台部分Users！");
+				System.out.println(result);
+			}
+		}
+		
+		
+		if(search.equals("searchBeauty")){
+			List<BeautyBean> mList=null;
+			SelectBeauty select=new SelectBeauty();
+			PrintWriter pw=response.getWriter();
+			mList=select.selectPartBeauty();
+			if(mList!=null){
+				Gson gson=new Gson();
+				String result=gson.toJson(mList);
+				pw.write(result);
+				pw.close();
+				System.out.println("已获取后台部分BeautyBean！");
+				System.out.println(result);
+			}
+		}
 		
 		
 	}

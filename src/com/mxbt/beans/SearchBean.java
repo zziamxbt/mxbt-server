@@ -2,12 +2,13 @@ package com.mxbt.beans;
 
 import java.io.Serializable;
 
-public class Users implements Serializable {
+public class SearchBean implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private int Uid;//主键
     private String Uhead;//头像
     private String Ubk;//背景图片
@@ -17,18 +18,16 @@ public class Users implements Serializable {
     private String Ucountry;//国家
     private String Usign;//个性签名
     private String Upassword;//密码
-<<<<<<< HEAD
-	private String Utoken;
-=======
-    private String Utoken;//token
-	
->>>>>>> f5d2212be62acef1abe7b509363ccd7f286c23ce
-	public Users(){
-		
-	}
-	public Users(int uid, String uhead, String ubk, String uname,
+    private int Aid;//文章id
+    private String Atitle;//文章标题
+    
+    public SearchBean(){
+    	
+    }
+
+	public SearchBean(int uid, String uhead, String ubk, String uname,
 			String unickname, String usex, String ucountry, String usign,
-			String upassword, String utoken) {
+			String upassword, int aid, String atitle) {
 		super();
 		Uid = uid;
 		Uhead = uhead;
@@ -39,83 +38,107 @@ public class Users implements Serializable {
 		Ucountry = ucountry;
 		Usign = usign;
 		Upassword = upassword;
-		Utoken = utoken;
+		Aid = aid;
+		Atitle = atitle;
 	}
+
 	public int getUid() {
 		return Uid;
 	}
+
 	public void setUid(int uid) {
 		Uid = uid;
 	}
+
 	public String getUhead() {
 		return Uhead;
 	}
+
 	public void setUhead(String uhead) {
 		Uhead = uhead;
 	}
+
 	public String getUbk() {
 		return Ubk;
 	}
+
 	public void setUbk(String ubk) {
 		Ubk = ubk;
 	}
+
 	public String getUname() {
 		return Uname;
 	}
+
 	public void setUname(String uname) {
 		Uname = uname;
 	}
+
 	public String getUnickname() {
 		return Unickname;
 	}
+
 	public void setUnickname(String unickname) {
 		Unickname = unickname;
 	}
+
 	public String getUsex() {
 		return Usex;
 	}
+
 	public void setUsex(String usex) {
 		Usex = usex;
 	}
+
 	public String getUcountry() {
 		return Ucountry;
 	}
+
 	public void setUcountry(String ucountry) {
 		Ucountry = ucountry;
 	}
+
 	public String getUsign() {
 		return Usign;
 	}
+
 	public void setUsign(String usign) {
 		Usign = usign;
 	}
+
 	public String getUpassword() {
 		return Upassword;
 	}
+
 	public void setUpassword(String upassword) {
 		Upassword = upassword;
 	}
-	public String getUtoken() {
-		return Utoken;
+
+	public int getAid() {
+		return Aid;
 	}
-	public void setUtoken(String utoken) {
-		Utoken = utoken;
+
+	public void setAid(int aid) {
+		Aid = aid;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+
+	public String getAtitle() {
+		return Atitle;
 	}
+
+	public void setAtitle(String atitle) {
+		Atitle = atitle;
+	}
+
 	@Override
 	public String toString() {
-		return "Users [Uid=" + Uid + ", Uhead=" + Uhead + ", Ubk=" + Ubk
+		return "SearchBean [Uid=" + Uid + ", Uhead=" + Uhead + ", Ubk=" + Ubk
 				+ ", Uname=" + Uname + ", Unickname=" + Unickname + ", Usex="
 				+ Usex + ", Ucountry=" + Ucountry + ", Usign=" + Usign
-				+ ", Upassword=" + Upassword + ", Utoken=" + Utoken + "]";
+				+ ", Upassword=" + Upassword + ", Aid=" + Aid + ", Atitle="
+				+ Atitle + "]";
 	}
-
-	
-
-	
-	
-	
+    
+    
 
 }
